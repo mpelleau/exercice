@@ -1,0 +1,80 @@
+\documentclass{exercice}
+
+%% http://www.ntg.nl/EuroTeX/2012/talks/2arnold.pdf
+%\gdef\conditionmacro{1}
+
+\ifx\conditionmacro\undefined
+  \immediate\write18{%
+    pdflatex --jobname="\jobname-examA"
+    "\gdef\string\conditionmacro{1}\string\PassOptionsToClass{exam,noanswer}{exercice}\string\input\space\jobname\string"
+  }%
+  \immediate\write18{%
+    pdflatex --jobname="\jobname-examB"
+    "\gdef\string\conditionmacro{2}\string\PassOptionsToClass{exam,noanswer,versionB}{exercice}\string\input\space\jobname\string"
+  }%
+  \immediate\write18{%
+    pdflatex --jobname="\jobname-corrA"
+    "\gdef\string\conditionmacro{3}\string\input\space\jobname"
+  }%
+  \immediate\write18{%
+    pdflatex --jobname="\jobname-corrB"
+    "\gdef\string\conditionmacro{4}\string\PassOptionsToClass{versionB}{exercice}\string\input\space\jobname\string"
+  }%
+  \expandafter\stop
+ \fi
+
+
+\title{Test}
+\author{}
+\begin{document}
+
+\maketitle
+
+\begin{Exercise}[title={Système positionnel}]
+  Considérons une base quelconque $b$ de chiffres $c_i$.
+
+  \versions{version A}{version B}
+\Question 
+Comment s'écrivent les nombres 0 et 1 ?
+\ExamLines{2}
+\Question
+Quel est l’intervalle pour $i$ ?
+\ExamLines{2}
+\Question
+Comment s'écrit le nombre $b$ ? Et ses puissances $b^n$ ?
+\ExamLines{3}
+\Question
+Quel est le plus petit nombre à 4 chiffres ? Et le plus grand ?
+\ExamLines{2}
+% \ExamGrid{10}
+\end{Exercise}
+
+\begin{Answer}
+  \Question 
+  0 et 1 ;)  
+  \\
+  La réponse est $c_0$ et $c_1$.
+  \Question
+  $[0, b[$
+  \Question
+  $b=10$ ou en d'autres termes $b=c_1c_0$.
+  \\
+  $b^n$ $c_1$ suivi de $n$ digits $c_0$. 
+  \Question
+  $c_1c_0c_0c_0$ (plus petit) et   $c_{b-1}c_{b-1}c_{b-1}c_{b-1}$ (plus grand).
+\end{Answer}
+
+
+\ifnum\conditionmacro=1 Condition is 1\fi 
+
+\ifnum\conditionmacro=2 Condition is 2\fi
+
+\ifnum\conditionmacro=3 Condition is 3\fi
+
+\verb|\conditionmacro| is \texttt{\meaning\conditionmacro}.
+
+\end{document}
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
