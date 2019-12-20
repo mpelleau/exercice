@@ -261,7 +261,7 @@ Running "make install" installs the files in the local TeX tree.
 %    \end{macrocode}
 % \end{macro}
 
-% \subsection{Answer Placeholders}
+% \subsection{Exam Placeholders}
 % a counter for generating the lines (internal)
 %    \begin{macrocode}
 \newcounter{@ExamLines}
@@ -283,7 +283,27 @@ Running "make install" installs the files in the local TeX tree.
 }
 %    \end{macrocode}
 % \end{macro}
-
+% \subsection{Exam Conditional Formatting}
+% \begin{macro}{\ExamNewpage}
+% Clear the page 
+%    \begin{macrocode}
+\newcommand{\ExamNewpage}{%
+  \ifExamOutput
+  \clearpage
+  \fi
+}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\ExamOnly}
+% Clear the page 
+%    \begin{macrocode}
+\newcommand{\ExamOnly}[1]{%
+  \ifExamOutput
+  #1
+  \fi
+}
+%    \end{macrocode}
+% \end{macro}
 
 %    \begin{macrocode}
 \endinput
