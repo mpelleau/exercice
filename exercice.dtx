@@ -6,7 +6,7 @@
 %<*readme>
 |
 --------:| ----------------------------------------------------------------
-exercice:| This package configures and extends the exercise package. It provides default formatting for multiple versions of the document.
+exercice:| configure and extend the exercise package. 
   Author:| Arnaud Malapert
   E-mail:| arnaud.malapert@univ-cotedazur.fr
  License:| Released under the LaTeX Project Public License v1.3c or later
@@ -88,7 +88,7 @@ Running "make install" installs the files in the local TeX tree.
 %<class>\NeedsTeXFormat{LaTeX2e}[1999/12/01]
 %<class>\ProvidesClass{exercice}
 %<*class>
-    [2019/12/20 v1.00 This package configures and extends the exercise package. It provides default formatting for multiple versions of the document.]
+    [2019/12/20 v1.00 configure and extend the exercise package.]
 %</class>
 %<*driver>
 \documentclass{ltxdoc}
@@ -107,7 +107,7 @@ Running "make install" installs the files in the local TeX tree.
 % \GetFileInfo{\jobname.dtx}
 % \DoNotIndex{\newcommand,\newenvironment}
 %
-%\title{\textsf{exercice} --- This package configures and extends the exercise package. It provides default formatting for multiple versions of the document.\thanks{This file
+%\title{\textsf{exercice} --- configure and extend the exercise package.\thanks{This file
 %   describes version \fileversion, last revised \filedate.}
 %}
 %\author{Arnaud Malapert\thanks{E-mail: arnaud.malapert@univ-cotedazur.fr}}
@@ -146,15 +146,71 @@ Running "make install" installs the files in the local TeX tree.
 %
 %    \begin{macrocode}
 %<*class>
-\LoadClass[a4paper,fleqn]{article}
+\LoadClass[a4paper]{article}
 %    \end{macrocode}
-% \begin{macro}{\dummyMacro}
-% This is a dummy macro.  If it did anything, we'd describe its
-% implementation here.
+% The package exercices must specify babel class options.
 %    \begin{macrocode}
-\newcommand{\dummyMacro}{}
+\RequirePackage{babel}
+\RequirePackage[lastexercise]{exercise}
+%    \end{macrocode}
+% It loads additional packages used for formatting
+%    \begin{macrocode}
+\RequirePackage{tikz,afterpage}
+\RequirePackage{titling,fancyhdr}
+%    \end{macrocode}
+
+
+% \subsection{Package Options}
+% The option |exam| triggers formatting of examination papers with custom title and header, blank lines, and grids.
+%    \begin{macrocode}
+\newif\ifExamOutput \ExamOutputfalse
+\DeclareOption{exam}{\ExamOutputtrue}
+%    \end{macrocode}
+% These options define the version of the document. 
+%    \begin{macrocode}
+\newif\ifVersionA \VersionAtrue
+\DeclareOption{versionB}{\VersionAfalse}
+%    \end{macrocode}
+% Declare and process options.
+%    \begin{macrocode}
+\DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
+\DeclareOption*{\PassOptionsToPackage{\CurrentOption}{exercise}}
+\ProcessOptions			
+%    \end{macrocode}
+
+% \subsection{Course Information}
+% \begin{macro}{\coursename}
+% The name of the course.
+% |\mymacro| \oarg{pos} \marg{width} \marg{text}
+%    \begin{macrocode}
+\newcommand{\coursename}{}
 %    \end{macrocode}
 % \end{macro}
+% \begin{macro}{\coursecode}
+% The name of the course.  
+%    \begin{macrocode}
+\newcommand{\coursecode}{}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\degreename}
+% The name of the degree.  
+%    \begin{macrocode}
+\newcommand{\degreename}{}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\universityname}
+% The name of the university.  
+%    \begin{macrocode}
+\newcommand{\universityname}{Universit\'e Nice Sophia Antipolis}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\universitylogo}
+% The path to an image with the logo of the university.  
+%    \begin{macrocode}
+\newcommand{\universitylogo}{logo-uns.png}
+%    \end{macrocode}
+% \end{macro}
+%
 %
 % \begin{environment}{dummyEnv}
 % This is a dummy environment.  If it did anything, we'd describe its
@@ -176,8 +232,65 @@ Running "make install" installs the files in the local TeX tree.
 %    \end{macrocode}
 % \end{environment}
 %
+
+% \subsection{Exam Information}
+% \begin{macro}{\ExamRemark}
+% A short remark printed on the examination paper
+%    \begin{macrocode}
+\newcommand{\ExamRemark}{}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\ExamDuration}
+% The duration of an exam
+%    \begin{macrocode}
+\newcommand{\ExamDuration}{}
+%    \end{macrocode}
+% \end{macro}
+
+% \subsection{Versions A and B}
+% \begin{macro}{\versions}
+% Content that depends on the version.
+%    \begin{macrocode}
+\newcommand{\versions}[2]{%
+  \ifVersionA%
+  #1%
+  \else%
+  #2%
+  \fi%
+}
+%    \end{macrocode}
+% \end{macro}
+
+% \subsection{Answer Placeholders}
+% a counter for generating the lines (internal)
+%    \begin{macrocode}
+\newcounter{@ExamLines}
+%    \end{macrocode}
+% \begin{macro}{\ExamLines}
+% |ExamLines| \oarg{nb} prints \oarg{nb} lines for writing answers on examination paper.
+%    \begin{macrocode}
+\newcommand{\ExamLines}[1]{%
+  \ifExamOutput
+  \ExeText%
+  \noindent%
+  \begin{center}%
+    \setcounter{@ExamLines}{0}%
+    \whiledo{\value{@ExamLines}<#1}{%
+      \begingroup\color{gray}\hrulefill\endgroup\\[2ex]%
+      \stepcounter{@ExamLines}}%
+  \end{center}%
+  \fi
+}
+%    \end{macrocode}
+% \end{macro}
+
+
 %    \begin{macrocode}
 \endinput
 %</class>
 %    \end{macrocode}
+
+
 %\Finale
+\endinput
+
