@@ -148,19 +148,9 @@ Running "make install" installs the files in the local TeX tree.
 %<*class>
 \LoadClass[a4paper]{article}
 %    \end{macrocode}
-% The package exercices must specify babel class options.
-%    \begin{macrocode}
-\RequirePackage{babel}
-\RequirePackage[lastexercise]{exercise}
-%    \end{macrocode}
-% It loads additional packages used for formatting
-%    \begin{macrocode}
-\RequirePackage{geometry,tikz,afterpage}
-\RequirePackage{titling,fancyhdr}
-%    \end{macrocode}
 
 
-% \subsection{Package Options}
+% \subsection{Class Options}
 % The option |exam| triggers formatting of examination papers with custom title and header, blank lines, and grids.
 %    \begin{macrocode}
 \newif\ifExamOutput \ExamOutputfalse
@@ -175,7 +165,20 @@ Running "make install" installs the files in the local TeX tree.
 %    \begin{macrocode}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
 \DeclareOption*{\PassOptionsToPackage{\CurrentOption}{exercise}}
-\ProcessOptions			
+\ProcessOptions
+%    \end{macrocode}
+
+% \subsection{Requirements}
+
+% The package exercices must specify babel class options.
+%    \begin{macrocode}
+\RequirePackage{babel}
+\RequirePackage[lastexercise]{exercise}
+%    \end{macrocode}
+% It loads additional packages used for formatting
+%    \begin{macrocode}
+\RequirePackage{geometry,tikz,afterpage}
+\RequirePackage{titling,fancyhdr}
 %    \end{macrocode}
 
 % \subsection{Course Information}
@@ -310,6 +313,18 @@ Running "make install" installs the files in the local TeX tree.
 \geometry{top=25mm, bottom=20mm, right=20mm}
 \else
 \geometry{top=20mm, bottom=20mm, left=20mm, right=20mm}
+\fi
+%    \end{macrocode}
+% Define custom headers
+%    \begin{macrocode}
+\pagestyle{fancyplain}
+\fancyhf{}
+\ifExamOutput
+\lhead{\fancyplain{}{\coursecode}}
+\rhead{\fancyplain{}{\versions{A}{B}\thepage}}
+\else
+\lhead{\fancyplain{\parbox[t]{7cm}{\large\universityname\\\degreename\ --\ \coursecode}}{\large\degreename\ --\ \coursename}}
+\rhead{\fancyplain{\large\coursename}{\large\versions{A}{B}\thepage}}
 \fi
 %    \end{macrocode}
 
