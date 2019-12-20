@@ -155,7 +155,7 @@ Running "make install" installs the files in the local TeX tree.
 %    \end{macrocode}
 % It loads additional packages used for formatting
 %    \begin{macrocode}
-\RequirePackage{tikz,afterpage}
+\RequirePackage{geometry,tikz,afterpage}
 \RequirePackage{titling,fancyhdr}
 %    \end{macrocode}
 
@@ -283,9 +283,9 @@ Running "make install" installs the files in the local TeX tree.
 }
 %    \end{macrocode}
 % \end{macro}
-% \subsection{Exam Conditional Formatting}
+% \subsection{Formatting}
 % \begin{macro}{\ExamNewpage}
-% Clear the page 
+% Clear the page for exam 
 %    \begin{macrocode}
 \newcommand{\ExamNewpage}{%
   \ifExamOutput
@@ -295,7 +295,7 @@ Running "make install" installs the files in the local TeX tree.
 %    \end{macrocode}
 % \end{macro}
 % \begin{macro}{\ExamOnly}
-% Clear the page 
+% print only for exam
 %    \begin{macrocode}
 \newcommand{\ExamOnly}[1]{%
   \ifExamOutput
@@ -304,6 +304,14 @@ Running "make install" installs the files in the local TeX tree.
 }
 %    \end{macrocode}
 % \end{macro}
+% Use the geometry package to reduce margins
+%    \begin{macrocode}
+\ifExamOutput
+\geometry{top=25mm, bottom=20mm, right=20mm}
+\else
+\geometry{top=20mm, bottom=20mm, left=20mm, right=20mm}
+\fi
+%    \end{macrocode}
 
 %    \begin{macrocode}
 \endinput
