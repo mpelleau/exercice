@@ -1,0 +1,37 @@
+#LateX
+*.toc
+*.aux
+*.lof
+*.lot
+*.lox
+*.bbl
+*.blg
+*.ind
+*.loa
+*.idx
+*.out
+*.glo
+*.gls
+*.hd
+*.fls
+*.ilg
+*.ins
+*.spl
+*.rel
+*.nav
+*.snm
+*.fdb_latexmk
+
+
+
+# Emacs stuff
+_region_.tex
+auto/
+
+# Random OS stuff
+.DS_Store
+Thumbs.db
+*.bak
+*.log
+*~
+
