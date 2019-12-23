@@ -286,6 +286,41 @@ Running "make install" installs the files in the local TeX tree.
 }
 %    \end{macrocode}
 % \end{macro}
+% \begin{macro}{\roundlcm}
+% return a length in cm rounded to an integer.
+%    \begin{macrocode}
+\makeatletter%
+\def\l@nunitperpt{0.0351459}\def\l@nunits{cm}%
+\def\@round#1.#2\@empty{#1}%
+\newcommand{\roundlcm}[1]{%
+    \expandafter\@round
+    \the\dimexpr\l@nunitperpt\dimexpr#1\relax + 0.5pt\relax\@empty
+}%
+\makeatother%
+
+\newlength{\ExamGridWidth}
+\setlength{\ExamGridWidth}{\roundlcm{\textwidth}cm}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\ExamGrid}
+% print a grid for writing answers using the \marg{height} parameter in cm.
+%    \begin{macrocode}
+
+\newcommand{\ExamGrid}[1]{%
+  \ifExamOutput
+  \ExeText%
+  \noindent%
+  \begin{center}%
+    \begin{tikzpicture}%
+      \draw[step=5mm, thin,color=gray!80] (0, 0) grid (\ExamGridWidth,#1cm);%
+    \end{tikzpicture}%
+  \end{center}%
+  \fi
+}
+%    \end{macrocode}
+% \end{macro}
+
+
 % \subsection{Formatting}
 % \begin{macro}{\ExamNewpage}
 % Clear the page for exam 
@@ -327,6 +362,7 @@ Running "make install" installs the files in the local TeX tree.
 \rhead{\fancyplain{\large\coursename}{\large\versions{A}{B}\thepage}}
 \fi
 %    \end{macrocode}
+
 
 %    \begin{macrocode}
 \endinput
