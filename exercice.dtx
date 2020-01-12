@@ -362,7 +362,70 @@ Running "make install" installs the files in the local TeX tree.
 \rhead{\fancyplain{\large\coursename}{\large\versions{A}{B}\thepage}}
 \fi
 %    \end{macrocode}
-
+%% Redefine \maketitle depending on exam option.
+%% Note that |\author| is not printed and even erased by the macro.
+%    \begin{macrocode}
+\ifExamOutput
+\pretitle{
+  \vspace{-3.5cm}%
+  \hspace*{-2cm}\includegraphics[width=5cm,height=5cm]{\universitylogo}\hfill \\[10pt]  
+  \hspace*{-2cm}\begin{minipage}[b]{11cm}
+    
+    \large
+    \universityname \hfill \degreename\\
+    \hfill \coursecode 
+\begin{center}\LARGE}
+\posttitle{\par\end{center}\vskip 0.1em
+\end{minipage}}
+\preauthor{\author{}}\postauthor{}
+\predate{
+  \newline
+  \hspace*{-2cm}\begin{minipage}[b]{11cm}
+    \begin{center}\large}
+    \postdate{%
+      \par\end{center}%
+\textbf{Durée :} \ExamDuration\\
+\ExamRemark\\[5pt]
+\fbox{\parbox[t]{2cm}{Note\\ \ \\ \ \\ \ }}%
+\quad\parbox[t]{7cm}{\scriptsize Il est de votre responsabilité de rabattre le triangle grisé et de le cacheter au moyen de colle, agrafes ou papier adhésif. Si ne vous le faites pas, vous acceptez implicitement que votre copie ne soit pas anonyme.}%
+\end{minipage}
+%% frame of the title page
+\begin{tikzpicture}[remember picture, overlay]
+        \node [shift={(-8cm,-8cm)}] at (current page.north east)
+              {\begin{tikzpicture}[remember picture, overlay]
+                  \draw (0,0) rectangle (8,8);
+                  \draw [fill=gray] (0,8) -- (8,8) -- (8,0) -- cycle;
+                  \path [coordinate]
+                  \foreach \k in {1,...,4}{%
+                    (0pt,8cm-\k*1.2cm) coordinate (d\k)};
+                  \path [clip] (0,0) rectangle (8,8);
+                  \foreach \k/\t in {1/Nom,2/Prénom,3/Né(e) à,4/Le}{%
+                    \node [inner sep=0pt,rotate=-45,%
+                      right=0.5cm,minimum height=12pt] (f\k) at (d\k) {\t};
+                    \draw (f\k.south east) -- (8cm-\k*1.2cm,-6pt);
+                  }
+                \end{tikzpicture}};
+          \end{tikzpicture}
+          %% frame at the verso of the title page
+          \afterpage{\vspace*{5cm}}
+          \afterpage{%
+            \begin{tikzpicture}[remember picture, overlay]
+              \node [shift={(0cm,-8cm)}] at (current page.north west)
+              {\begin{tikzpicture}[remember picture, overlay]
+                  \draw (0,0) [fill=gray] rectangle (8,8);
+                \end{tikzpicture}};
+            \end{tikzpicture}
+          }
+}
+\else
+\pretitle{\begin{center}\LARGE}
+\posttitle{\par\end{center}\vskip 0.1em}
+\preauthor{\author{}}
+\postauthor{}
+\predate{\begin{center}\large}
+\postdate{\par\end{center}}
+\fi
+%    \end{macrocode}
 
 %    \begin{macrocode}
 \endinput
