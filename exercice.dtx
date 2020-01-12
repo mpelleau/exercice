@@ -189,12 +189,6 @@ Running "make install" installs the files in the local TeX tree.
 \newcommand{\coursename}{}
 %    \end{macrocode}
 % \end{macro}
-% \begin{macro}{\coursecode}
-% The name of the course.  
-%    \begin{macrocode}
-\newcommand{\coursecode}{}
-%    \end{macrocode}
-% \end{macro}
 % \begin{macro}{\degreename}
 % The name of the degree.  
 %    \begin{macrocode}
@@ -355,11 +349,11 @@ Running "make install" installs the files in the local TeX tree.
 \pagestyle{fancyplain}
 \fancyhf{}
 \ifExamOutput
-\lhead{\fancyplain{}{\coursecode}}
+\lhead{\fancyplain{}{\coursename}}
 \rhead{\fancyplain{}{\versions{A}{B}\thepage}}
 \else
-\lhead{\fancyplain{\parbox[t]{7cm}{\large\universityname\\\degreename\ --\ \coursecode}}{\large\degreename\ --\ \coursename}}
-\rhead{\fancyplain{\large\coursename}{\large\versions{A}{B}\thepage}}
+\lhead{\fancyplain{\parbox[t]{7cm}{\large\universityname\\\coursename}}{\large\coursename}}
+\rhead{\fancyplain{\large\degreename}{\large\versions{A}{B}\thepage}}
 \fi
 %    \end{macrocode}
 %% Redefine \maketitle depending on exam option.
@@ -373,7 +367,7 @@ Running "make install" installs the files in the local TeX tree.
     
     \large
     \universityname \hfill \degreename\\
-    \hfill \coursecode 
+    \hfill \coursename 
 \begin{center}\LARGE}
 \posttitle{\par\end{center}\vskip 0.1em
 \end{minipage}}
