@@ -218,7 +218,6 @@ Running "make install" installs the files in the local TeX tree.
 %    \end{macrocode}
 % \end{macro}
 %
-%
 % \begin{environment}{dummyEnv}
 % This is a dummy environment.  If it did anything, we'd describe its
 % implementation here.
@@ -254,6 +253,7 @@ Running "make install" installs the files in the local TeX tree.
 %    \end{macrocode}
 % \end{macro}
 
+
 % \subsection{Versions A and B}
 % \begin{macro}{\versions}
 % Content that depends on the version.
@@ -264,6 +264,35 @@ Running "make install" installs the files in the local TeX tree.
   \else%
   #2%
   \fi%
+}
+%    \end{macrocode}
+% \end{macro}
+
+% \subsection{Course Information}
+% \begin{macro}{\ExamExport}
+% Configure internal jobs that generate examination papers for both versions.
+% Must be used only once in the preamble
+%    \begin{macrocode}
+\newcommand{\ExamExport}{%
+\ifx\ExamExportKey\undefined
+  \immediate\write18{%
+    pdflatex --jobname="\jobname-examA"
+    "\gdef\string\ExamExportKey{1}\string\PassOptionsToClass{exam,noanswer}{exercice}\string\input\space\jobname\string"
+  }%
+  \immediate\write18{%
+    pdflatex --jobname="\jobname-examB"
+    "\gdef\string\ExamExportKey{2}\string\PassOptionsToClass{exam,noanswer,versionB}{exercice}\string\input\space\jobname\string"
+  }%
+  \immediate\write18{%
+    pdflatex --jobname="\jobname-corrA"
+    "\gdef\string\ExamExportKey{3}\string\input\space\jobname"
+  }%
+  \immediate\write18{%
+    pdflatex --jobname="\jobname-corrB"
+    "\gdef\string\ExamExportKey{4}\string\PassOptionsToClass{versionB}{exercice}\string\input\space\jobname\string"
+  }%
+  \expandafter\stop
+ \fi
 }
 %    \end{macrocode}
 % \end{macro}

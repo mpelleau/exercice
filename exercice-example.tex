@@ -1,32 +1,10 @@
-\documentclass[exam,nograde]{exercice}
+\documentclass{exercice}
+\ExamExport
 
 \renewcommand{\coursename}{My Course}
 \renewcommand{\degreename}{Degree}
 \renewcommand{\ExamDuration}{2 heures}
 \renewcommand{\ExamRemark}{Remarque \dots }
-%% http://www.ntg.nl/EuroTeX/2012/talks/2arnold.pdf
-\gdef\conditionmacro{0}
-
-\ifx\conditionmacro\undefined
-  \immediate\write18{%
-    pdflatex --jobname="\jobname-examA"
-    "\gdef\string\conditionmacro{1}\string\PassOptionsToClass{exam,noanswer}{exercice}\string\input\space\jobname\string"
-  }%
-  \immediate\write18{%
-    pdflatex --jobname="\jobname-examB"
-    "\gdef\string\conditionmacro{2}\string\PassOptionsToClass{exam,noanswer,versionB}{exercice}\string\input\space\jobname\string"
-  }%
-  \immediate\write18{%
-    pdflatex --jobname="\jobname-corrA"
-    "\gdef\string\conditionmacro{3}\string\input\space\jobname"
-  }%
-  \immediate\write18{%
-    pdflatex --jobname="\jobname-corrB"
-    "\gdef\string\conditionmacro{4}\string\PassOptionsToClass{versionB}{exercice}\string\input\space\jobname\string"
-  }%
-  \expandafter\stop
- \fi
-
 
 \title{Test}
 \author{}
@@ -77,13 +55,13 @@ Quel est le plus petit nombre à 4 chiffres ? Et le plus grand ?
 \ExamNewpage
 \ExamOnly{\textbf{Exam Only}}
 
-\ifnum\conditionmacro=1 Condition is 1\fi 
+% \ifnum\ExamExportKey=1 Condition is 1\fi 
 
-\ifnum\conditionmacro=2 Condition is 2\fi
+% \ifnum\ExamExportKey=2 Condition is 2\fi
 
-\ifnum\conditionmacro=3 Condition is 3\fi
+% \ifnum\ExamExportKey=3 Condition is 3\fi
 
-\verb|\conditionmacro| is \texttt{\meaning\conditionmacro}.
+\verb|\ExamExportKey| is \texttt{\meaning\ExamExportKey}.
 
 
 
