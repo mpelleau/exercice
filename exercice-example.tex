@@ -1,9 +1,11 @@
-\documentclass{exercice}
+\documentclass[exam,nograde]{exercice}
 
 \renewcommand{\coursename}{My Course}
 \renewcommand{\degreename}{Degree}
+\renewcommand{\ExamDuration}{2 heures}
+\renewcommand{\ExamRemark}{Remarque \dots }
 %% http://www.ntg.nl/EuroTeX/2012/talks/2arnold.pdf
-%\gdef\conditionmacro{1}
+\gdef\conditionmacro{0}
 
 \ifx\conditionmacro\undefined
   \immediate\write18{%

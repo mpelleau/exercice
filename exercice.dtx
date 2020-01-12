@@ -161,6 +161,11 @@ Running "make install" installs the files in the local TeX tree.
 \newif\ifVersionA \VersionAtrue
 \DeclareOption{versionB}{\VersionAfalse}
 %    \end{macrocode}
+% The option |nogrades| does not display the grades table in the left margin of |exam|.
+%    \begin{macrocode}
+\newif\ifGradeOutput \GradeOutputtrue
+\DeclareOption{nograde}{\GradeOutputfalse}
+%    \end{macrocode}
 % Declare and process options.
 %    \begin{macrocode}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
@@ -418,6 +423,7 @@ Running "make install" installs the files in the local TeX tree.
                 \end{tikzpicture}};
             \end{tikzpicture}
           }
+          \ifGradeOutput
           \vspace{1.5cm}
           \marginpar{
             \setcounter{@ExamLines}{1}
@@ -434,6 +440,7 @@ Running "make install" installs the files in the local TeX tree.
             \end{tabular}%
           }
           \vspace{-1.5cm}
+          \fi
         }
 \else
 \pretitle{\begin{center}\LARGE}
