@@ -180,6 +180,11 @@ Running "make install" installs the files in the local TeX tree.
 \RequirePackage{geometry,tikz,afterpage}
 \RequirePackage{titling,fancyhdr}
 %    \end{macrocode}
+% It registers the exercise counter used in the grades table.
+%    \begin{macrocode}
+\usepackage{totcount}
+\regtotcounter{Exercise}
+%    \end{macrocode}
 
 % \subsection{Course Information}
 % \begin{macro}{\coursename}
@@ -356,34 +361,37 @@ Running "make install" installs the files in the local TeX tree.
 \rhead{\fancyplain{\large\degreename}{\large\versions{A}{B}\thepage}}
 \fi
 %    \end{macrocode}
-%% Redefine \maketitle depending on exam option.
-%% Note that |\author| is not printed and even erased by the macro.
+% Redefine \maketitle depending on the exam option.
 %    \begin{macrocode}
 \ifExamOutput
+\reversemarginpar    
 \pretitle{
   \vspace{-3.5cm}%
-  \hspace*{-2cm}\includegraphics[width=5cm,height=5cm]{\universitylogo}\hfill \\[10pt]  
+  \hspace*{-2cm}\includegraphics[width=4cm,height=4cm]{\universitylogo}\hfill \\[10pt]  
   \hspace*{-2cm}\begin{minipage}[b]{11cm}
-    
     \large
     \universityname \hfill \degreename\\
     \hfill \coursename 
 \begin{center}\LARGE}
-\posttitle{\par\end{center}\vskip 0.1em
-\end{minipage}}
+\posttitle{\par\end{center}\vskip 0.1em\end{minipage}}
+%    \end{macrocode}
+% Note that |\author| is not printed.
+%    \begin{macrocode}
 \preauthor{\author{}}\postauthor{}
+%    \end{macrocode}
+% Put placeholders and instructions below the date
+%    \begin{macrocode}
 \predate{
-  \newline
-  \hspace*{-2cm}\begin{minipage}[b]{11cm}
-    \begin{center}\large}
-    \postdate{%
+\newline%
+\hspace*{-2cm}\begin{minipage}[b]{11cm}%
+\begin{center}\large}
+\postdate{%
       \par\end{center}%
 \textbf{Durée :} \ExamDuration\\
 \ExamRemark\\[5pt]
 \fbox{\parbox[t]{2cm}{Note\\ \ \\ \ \\ \ }}%
 \quad\parbox[t]{7cm}{\scriptsize Il est de votre responsabilité de rabattre le triangle grisé et de le cacheter au moyen de colle, agrafes ou papier adhésif. Si ne vous le faites pas, vous acceptez implicitement que votre copie ne soit pas anonyme.}%
 \end{minipage}
-%% frame of the title page
 \begin{tikzpicture}[remember picture, overlay]
         \node [shift={(-8cm,-8cm)}] at (current page.north east)
               {\begin{tikzpicture}[remember picture, overlay]
@@ -410,7 +418,23 @@ Running "make install" installs the files in the local TeX tree.
                 \end{tikzpicture}};
             \end{tikzpicture}
           }
-}
+          \vspace{1.5cm}
+          \marginpar{
+            \setcounter{@ExamLines}{1}
+            \renewcommand{\arraystretch}{1.5}
+            \versions{\color{purple}}{\color{blue}}
+            \begin{tabular}{|p{1.5cm}|}
+              \hline
+              Sujet \versions{A}{B}\\
+              \hline
+              \whiledo{\value{@ExamLines} < \totvalue{Exercise}}{%
+              \arabic{@ExamLines} : \stepcounter{@ExamLines}\\\hline
+              }
+              \arabic{@ExamLines} : \stepcounter{@ExamLines}\\\hline
+            \end{tabular}%
+          }
+          \vspace{-1.5cm}
+        }
 \else
 \pretitle{\begin{center}\LARGE}
 \posttitle{\par\end{center}\vskip 0.1em}
