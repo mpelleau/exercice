@@ -6,7 +6,7 @@
 %<*readme>
 |
 --------:| ----------------------------------------------------------------
-exercice:| configure and extend the exercise package. 
+exercice:| This package configures and extends the exercise package.
   Author:| Arnaud Malapert
   E-mail:| arnaud.malapert@univ-cotedazur.fr
  License:| Released under the LaTeX Project Public License v1.3c or later
@@ -29,7 +29,7 @@ Some text about the class: probably the same as the abstract.
 \askforoverwritefalse
 \preamble
 --------:| ----------------------------------------------------------------
-exercice:| This package configures and extends the exercise package. It provides default formatting for multiple versions of the document.
+exercice:| This package configures and extends the exercise package.
   Author:| Arnaud Malapert
   E-mail:| arnaud.malapert@univ-cotedazur.fr
  License:| Released under the LaTeX Project Public License v1.3c or later
@@ -118,7 +118,12 @@ Running "make install" installs the files in the local TeX tree.
 %\changes{v1.00}{2019/12/20}{First public release}
 %
 % \begin{abstract}
-% ==== Put abstract text here. ====
+% This package configures and extends the exercise package for typesetting examination papers.
+% It allows to prepare two versions of the examination paper along with its correction.
+% The user must redefine a few commands for specifying general information about the course and the examination.
+% The package defines custom formatting (title, headers, margins) for the different versions of the document.
+% It also provides user command for examination papers such as answer placeholders.
+% Last, an export command allows to easily export all versions of the document at once. 
 % \end{abstract}
 %
 % \section{Usage}
@@ -151,17 +156,19 @@ Running "make install" installs the files in the local TeX tree.
 
 
 % \subsection{Class Options}
-% The option |exam| triggers formatting of examination papers with custom title and header, blank lines, and grids.
+% Options arre passed to the |exercise| package.
+% The package uses three additional options: |exam|; |versionB|; |nograde|. \\
+% The option |exam| indicates that the document is an examination paper, and not a correction.
 %    \begin{macrocode}
 \newif\ifExamOutput \ExamOutputfalse
 \DeclareOption{exam}{\ExamOutputtrue}
 %    \end{macrocode}
-% These options define the version of the document. 
+% The option |versionB| indicates that the version of the document is B (default is A). 
 %    \begin{macrocode}
 \newif\ifVersionA \VersionAtrue
 \DeclareOption{versionB}{\VersionAfalse}
 %    \end{macrocode}
-% The option |nogrades| does not display the grades table in the left margin of |exam|.
+% The option |nogrades| cancels the display of the grades table in the examination paper.
 %    \begin{macrocode}
 \newif\ifGradeOutput \GradeOutputtrue
 \DeclareOption{nograde}{\GradeOutputfalse}
@@ -175,26 +182,27 @@ Running "make install" installs the files in the local TeX tree.
 
 % \subsection{Requirements}
 
-% The package exercices must specify babel class options.
+% The options given to the package |exercice| must include babel class options.
 %    \begin{macrocode}
 \RequirePackage{babel}
 \RequirePackage[lastexercise]{exercise}
 %    \end{macrocode}
-% It loads additional packages used for formatting
+% It loads additional packages used for formatting.
 %    \begin{macrocode}
 \RequirePackage{geometry,tikz,afterpage}
 \RequirePackage{titling,fancyhdr}
 %    \end{macrocode}
-% It registers the exercise counter used in the grades table.
+% It registers the total value of any counter.
 %    \begin{macrocode}
 \usepackage{totcount}
 \regtotcounter{Exercise}
 %    \end{macrocode}
 
-% \subsection{Course Information}
+% \subsection{General Information}
+% The user must redefine these commands that specify information about the course or the examination using |\renewcommand|.
+% \subsubsection{Course Information}
 % \begin{macro}{\coursename}
 % The name of the course.
-% |\mymacro| \oarg{pos} \marg{width} \marg{text}
 %    \begin{macrocode}
 \newcommand{\coursename}{}
 %    \end{macrocode}
@@ -218,36 +226,37 @@ Running "make install" installs the files in the local TeX tree.
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{environment}{dummyEnv}
-% This is a dummy environment.  If it did anything, we'd describe its
-% implementation here.
-%    \begin{macrocode}
-\newenvironment{dummyEnv}{%
-}{%
-%    \end{macrocode}
-% \changes{v1.00a}{2019/12/20}{Added a spurious change log entry to
-%   show what a change \emph{within} an environment definition looks
-%   like.}
-% Don't use |%| to introduce a code comment within a |macrocode|
-% environment.  Instead, you should typeset all of your comments with
-% LaTeX---doing so gives much prettier results.  For comments within a
-% macro/environment body, just do an |\end{macrocode}|, include some
-% commentary, and do another |\begin{macrocode}|.  It's that simple.
-%    \begin{macrocode}
-}
-%    \end{macrocode}
-% \end{environment}
-%
+%^^A % \begin{environment}{dummyEnv}
+%^^A % This is a dummy environment.  If it did anything, we'd describe its
+%^^A % implementation here.
+%^^A %    \begin{macrocode}
+%^^A \newenvironment{dummyEnv}{%
+%^^A }{%
+%^^A %    \end{macrocode}
+%^^A % \changes{v1.00a}{2019/12/20}{Added a spurious change log entry to
+%^^A %   show what a change \emph{within} an environment definition looks
+%^^A %   like.}
+%^^A % Don't use |%| to introduce a code comment within a |macrocode|
+%^^A % environment.  Instead, you should typeset all of your comments with
+%^^A % LaTeX---doing so gives much prettier results.  For comments within a
+%^^A % macro/environment body, just do an |\end{macrocode}|, include some
+%^^A % commentary, and do another |\begin{macrocode}|.  It's that simple.
+%^^A %    \begin{macrocode}
+%^^A }
+%^^A %    \end{macrocode}
+%^^A % \end{environment}
+%^^A %
 
-% \subsection{Exam Information}
+% \subsubsection{Exam Information}
+% These informations are only displayed on the first page of the examination paper 
 % \begin{macro}{\ExamRemark}
-% A short remark printed on the examination paper
+% Short remarks or instructions for the exam.
 %    \begin{macrocode}
-\newcommand{\ExamRemark}{}
+\newcommand{\ExamRemark}{Aucun document autorisé. Écrire à l'encre.}
 %    \end{macrocode}
 % \end{macro}
 % \begin{macro}{\ExamDuration}
-% The duration of an exam
+% The duration of the exam.
 %    \begin{macrocode}
 \newcommand{\ExamDuration}{}
 %    \end{macrocode}
@@ -256,7 +265,7 @@ Running "make install" installs the files in the local TeX tree.
 
 % \subsection{Versions A and B}
 % \begin{macro}{\versions}
-% Content that depends on the version.
+% Beside changing the titles and formats, the user can specify content that depends on the version (A or B).
 %    \begin{macrocode}
 \newcommand{\versions}[2]{%
   \ifVersionA%
@@ -268,10 +277,10 @@ Running "make install" installs the files in the local TeX tree.
 %    \end{macrocode}
 % \end{macro}
 
-% \subsection{Course Information}
+% \subsection{Export Helper}
 % \begin{macro}{\ExamExport}
-% Configure internal jobs that generate examination papers for both versions.
-% Must be used only once in the preamble
+% The command configures internal jobs using |\write18| that generate examination papers and corrections for both versions.
+% It is designed to be used only once in the preamble.
 %    \begin{macrocode}
 \newcommand{\ExamExport}{%
 \ifx\ExamExportKey\undefined
@@ -295,15 +304,38 @@ Running "make install" installs the files in the local TeX tree.
  \fi
 }
 %    \end{macrocode}
+% However, there is a security issue. If you download some TeX code from the Internet, can you be sure that there is not some command in it (perhaps in a hidden way) to do stuff that might be harmful to your PC 
+% So, requires an additional argument when starting TeX : \\ |(pdf)(la)tex --shell-escape|.
 % \end{macro}
 
-% \subsection{Exam Placeholders}
-% a counter for generating the lines (internal)
+% \subsection{Exam Commands and Placeholders}
+% This section presents special commands for the examination paper. 
+% \begin{macro}{\ExamNewpage}
+% Clear the page in |exam| 
+%    \begin{macrocode}
+\newcommand{\ExamNewpage}{%
+  \ifExamOutput
+  \clearpage
+  \fi
+}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\ExamOnly}
+% Print only in |exam|
+%    \begin{macrocode}
+\newcommand{\ExamOnly}[1]{%
+  \ifExamOutput
+  #1
+  \fi
+}
+%    \end{macrocode}
+% \end{macro}
+% Internal counter for generating lines and grids.
 %    \begin{macrocode}
 \newcounter{@ExamLines}
 %    \end{macrocode}
 % \begin{macro}{\ExamLines}
-% |ExamLines| \oarg{nb} prints \oarg{nb} lines for writing answers on examination paper.
+% Print lines for writing an answer on the examination paper.
 %    \begin{macrocode}
 \newcommand{\ExamLines}[1]{%
   \ifExamOutput
@@ -336,9 +368,8 @@ Running "make install" installs the files in the local TeX tree.
 %    \end{macrocode}
 % \end{macro}
 % \begin{macro}{\ExamGrid}
-% print a grid for writing answers using the \marg{height} parameter in cm.
+% Print a grid for writing an answer.
 %    \begin{macrocode}
-
 \newcommand{\ExamGrid}[1]{%
   \ifExamOutput
   \ExeText%
@@ -354,28 +385,11 @@ Running "make install" installs the files in the local TeX tree.
 % \end{macro}
 
 
-% \subsection{Formatting}
-% \begin{macro}{\ExamNewpage}
-% Clear the page for exam 
-%    \begin{macrocode}
-\newcommand{\ExamNewpage}{%
-  \ifExamOutput
-  \clearpage
-  \fi
-}
-%    \end{macrocode}
-% \end{macro}
-% \begin{macro}{\ExamOnly}
-% print only for exam
-%    \begin{macrocode}
-\newcommand{\ExamOnly}[1]{%
-  \ifExamOutput
-  #1
-  \fi
-}
-%    \end{macrocode}
-% \end{macro}
-% Use the geometry package to reduce margins
+% \subsection{Titling and Formatting}
+% This section enables the custom titles anf formatting for both examination paper and correction.
+% Most of the changes concern the examination paper.
+%
+% First, let reduce margins with the geometry package.
 %    \begin{macrocode}
 \ifExamOutput
 \geometry{top=25mm, bottom=20mm, right=20mm}
@@ -383,7 +397,7 @@ Running "make install" installs the files in the local TeX tree.
 \geometry{top=20mm, bottom=20mm, left=20mm, right=20mm}
 \fi
 %    \end{macrocode}
-% Define custom headers
+% Second, let define custom headers with the fancyhdr package.
 %    \begin{macrocode}
 \pagestyle{fancyplain}
 \fancyhf{}
@@ -395,7 +409,7 @@ Running "make install" installs the files in the local TeX tree.
 \rhead{\fancyplain{\large\degreename}{\large\versions{A}{B}\thepage}}
 \fi
 %    \end{macrocode}
-% Redefine \maketitle depending on the exam option.
+% Redefine |\maketitle| with the |titling| package.
 %    \begin{macrocode}
 \ifExamOutput
 \reversemarginpar    
@@ -413,7 +427,7 @@ Running "make install" installs the files in the local TeX tree.
 %    \begin{macrocode}
 \preauthor{\author{}}\postauthor{}
 %    \end{macrocode}
-% Put placeholders and instructions below the date
+% Put placeholders and instructions below the date for examination paper.
 %    \begin{macrocode}
 \predate{
 \newline%
@@ -426,6 +440,9 @@ Running "make install" installs the files in the local TeX tree.
 \fbox{\parbox[t]{2cm}{Note\\ \ \\ \ \\ \ }}%
 \quad\parbox[t]{7cm}{\scriptsize Il est de votre responsabilité de rabattre le triangle grisé et de le cacheter au moyen de colle, agrafes ou papier adhésif. Si ne vous le faites pas, vous acceptez implicitement que votre copie ne soit pas anonyme.}%
 \end{minipage}
+%    \end{macrocode}
+% Let print the identification block with the tikz package.
+%    \begin{macrocode}
 \begin{tikzpicture}[remember picture, overlay]
         \node [shift={(-8cm,-8cm)}] at (current page.north east)
               {\begin{tikzpicture}[remember picture, overlay]
@@ -452,6 +469,9 @@ Running "make install" installs the files in the local TeX tree.
                 \end{tikzpicture}};
             \end{tikzpicture}
           }
+%    \end{macrocode}
+% Let print the grade tables for teacher if it is enabled.
+%    \begin{macrocode}          
           \ifGradeOutput
           \vspace{1.5cm}
           \marginpar{
@@ -471,6 +491,9 @@ Running "make install" installs the files in the local TeX tree.
           \vspace{-1.5cm}
           \fi
         }
+%    \end{macrocode}
+% Let define the light foratting for corrections.
+%    \begin{macrocode}           
 \else
 \pretitle{\begin{center}\LARGE}
 \posttitle{\par\end{center}\vskip 0.1em}
