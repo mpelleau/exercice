@@ -176,25 +176,38 @@ Running "make install" installs the files in the local TeX tree.
 % Declare and process options.
 %    \begin{macrocode}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
-\DeclareOption*{\PassOptionsToPackage{\CurrentOption}{exercise}}
-\ProcessOptions
+\ProcessOptions\relax
 %    \end{macrocode}
 
 % \subsection{Requirements}
 
-% The options given to the package |exercice| must include babel class options.
+% The options given to the class |exercice| must include babel and exercise packages options.
 %    \begin{macrocode}
 \RequirePackage{babel}
 \RequirePackage[lastexercise]{exercise}
+%    \end{macrocode}
+% Here, we apply a workaround to fix the incompatibility between exercise and french (see \href{http://tex.stackexchange.com/questions/338293/package-exercise-change-exercise-to-french-exercice}{stackexchange}).  
+%    \begin{macrocode}
+\@ifpackageloaded{babel}{
+\addto{\captionsfrench}{ %% replace frenchb (fix exercise package)  
+  \def\listexercisename{Liste des exercices}%
+  \def\ExerciseName{Exercice}%
+  \def\AnswerName{Solution de l'exercice}%
+  \def\ExerciseListName{Ex.}%
+  \def\AnswerListName{Solution}%
+  \def\ExePartName{Partie}%
+}
+}{}
+
 %    \end{macrocode}
 % It loads additional packages used for formatting.
 %    \begin{macrocode}
 \RequirePackage{geometry,tikz,afterpage}
 \RequirePackage{titling,fancyhdr}
 %    \end{macrocode}
-% It registers the total value of any counter.
+% It registers the total value of the |Exercise| counter.
 %    \begin{macrocode}
-\usepackage{totcount}
+\RequirePackage{totcount}
 \regtotcounter{Exercise}
 %    \end{macrocode}
 

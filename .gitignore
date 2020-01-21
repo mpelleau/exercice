@@ -1,6 +1,11 @@
+# Generated Class Files
+exercice.cls
+exercice*.pdf
+
 #LateX
 *.toc
 *.aux
+*.loe
 *.lof
 *.lot
 *.lox
