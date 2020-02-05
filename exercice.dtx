@@ -168,10 +168,10 @@ Running "make install" installs the files in the local TeX tree.
 \newif\ifVersionA \VersionAtrue
 \DeclareOption{versionB}{\VersionAfalse}
 %    \end{macrocode}
-% The option |nogrades| cancels the display of the grades table in the examination paper.
+% The option |nograding| cancels the display of the grading table in the examination paper.
 %    \begin{macrocode}
-\newif\ifGradeOutput \GradeOutputtrue
-\DeclareOption{nograde}{\GradeOutputfalse}
+\newif\ifGradingOutput \GradingOutputtrue
+\DeclareOption{nograding}{\GradingOutputfalse}
 %    \end{macrocode}
 % Declare and process options.
 %    \begin{macrocode}
@@ -485,7 +485,7 @@ Running "make install" installs the files in the local TeX tree.
 %    \end{macrocode}
 % Let print the grade tables for teacher if it is enabled.
 %    \begin{macrocode}          
-          \ifGradeOutput
+          \ifGradingOutput
           \vspace{1.5cm}
           \marginpar{
             \setcounter{@ExamLines}{1}
