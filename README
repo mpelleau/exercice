@@ -6,3 +6,9 @@
 |     See:| http://www.latex-project.org/lppl.txt
 
 Short description:
+This package configures and extends the exercise package for typesetting examination papers.
+It allows to prepare two versions of the examination paper along with its correction.
+The user must redefine a few commands for specifying general information about the course and the examination.
+The package defines custom formatting (title, headers, margins) for the different versions of the document.
+It also provides user command for examination papers such as answer placeholders.
+Last, an export command allows to easily export all versions of the document at once.
