@@ -50,7 +50,7 @@ http://www.latex-project.org/lppl.txt
 This work is "maintained" (as per LPPL maintenance status) by
 Arnaud Malapert.
 
-This work consists of the file exercice.dtx and a Makefile.
+This work consists of the file exercice.dtx, the file exercice-example.tex, and a Makefile.
 Running "make" generates the derived files README, exercice.pdf and exercice.cls.
 Running "make inst" installs the files in the user's TeX tree.
 Running "make install" installs the files in the local TeX tree.
@@ -118,7 +118,7 @@ Running "make install" installs the files in the local TeX tree.
 %\changes{v1.00}{2019/12/20}{First public release}
 %
 % \begin{abstract}
-% This package configures and extends the exercise package for typesetting examination papers.
+% This package configures and extends the \textsf{exercise} package for typesetting examination papers.
 % It allows to prepare two versions of the examination paper along with its correction.
 % The user must redefine a few commands for specifying general information about the course and the examination.
 % The package defines custom formatting (title, headers, margins) for the different versions of the document.
@@ -128,19 +128,23 @@ Running "make install" installs the files in the local TeX tree.
 %
 % \section{Usage}
 %
-% ==== Put descriptive text here. ====
+% In this section, we briefly recall the usage of the most used commands when typesettting an exam.
+% Package options are described in Section~\ref{sec:options}.
+% Commands that configure the different placeholders are described in Section~\ref{sec:info}.
+% The command that configure the default export of the examination and correction papers are described in Section~\ref{sec:export}.
 %
-% \DescribeMacro{\dummyMacro}
-% This macro does nothing.\index{doing nothing|usage} It is merely an
-% example.  If this were a real macro, you would put a paragraph here
-% describing what the macro is supposed to do, what its mandatory and
-% optional arguments are, and so forth.
-%
-% \DescribeEnv{dummyEnv}
-% This environment does nothing.  It is merely an example.
-% If this were a real environment, you would put a paragraph here
-% describing what the environment is supposed to do, what its
-% mandatory and optional arguments are, and so forth.
+% \DescribeMacro{\versions}
+% The macro |\versions|\marg{textA} \marg{textB} allows to typeset simultaneously two versions of the document.
+% Only one argument is written depending of the version of the document (A or B). \\
+% \DescribeMacro{\ExamLines}
+% The macro |\ExamLines|\marg{nbLines} prints \meta{nbLines} lines for writing the answer to a question on the examination paper. \\
+% \DescribeMacro{\ExamGrid}
+% The macro |\ExamGrid|\marg{nbLines} prints a fullwidth grid with \meta{nbLines} lines for writing the answer to a question on the examination paper. \\
+% Now, let's describre two last commands used less frequently.
+% \DescribeMacro{\ExamNewpage}
+% The macro simply calls |\clearpage| in exam mode. \\
+% \DescribeMacro{\ExamOnly}
+% The macro simply calls |\ExamOnly|\marg{text} only prints \meta{text} in exam mode.
 %
 %\StopEventually{^^A
 %  \PrintChanges
@@ -156,7 +160,8 @@ Running "make install" installs the files in the local TeX tree.
 
 
 % \subsection{Class Options}
-% Options arre passed to the |exercise| package.
+% \label{sec:options}
+% Options arre passed to the \textsl{exercise} package.
 % The package uses three additional options: |exam|; |versionB|; |nograde|. \\
 % The option |exam| indicates that the document is an examination paper, and not a correction.
 %    \begin{macrocode}
@@ -173,20 +178,31 @@ Running "make install" installs the files in the local TeX tree.
 \newif\ifGradingOutput \GradingOutputtrue
 \DeclareOption{nograding}{\GradingOutputfalse}
 %    \end{macrocode}
-% Declare and process options.
+% Pass all options to the article class.
 %    \begin{macrocode}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
+%    \end{macrocode}
+% Pass relevant options to the \textsl{exercise} package.
+%    \begin{macrocode}
+\DeclareOption{noanswer}{\PassOptionsToPackage{noanswer}{exercise}}
+\DeclareOption{noexercise}{\PassOptionsToPackage{noexercise}{exercise}}
+\DeclareOption{answeronly}{\PassOptionsToPackage{answeronly}{exercise}}
+\DeclareOption{exerciseonly}{\PassOptionsToPackage{exerciseonly}{exercise}}
+\DeclareOption{nothing}{\PassOptionsToPackage{nothing}{exercise}}
+%    \end{macrocode}
+% Process options.
+%    \begin{macrocode}
 \ProcessOptions\relax
 %    \end{macrocode}
 
 % \subsection{Requirements}
 
-% The options given to the class |exercice| must include babel and exercise packages options.
+% The options given to the class |exercice| must include \textsl{babel} and \textsl{exercise} packages options.
 %    \begin{macrocode}
 \RequirePackage{babel}
 \RequirePackage[lastexercise]{exercise}
 %    \end{macrocode}
-% Here, we apply a workaround to fix the incompatibility between exercise and french (see \href{http://tex.stackexchange.com/questions/338293/package-exercise-change-exercise-to-french-exercice}{stackexchange}).  
+% Here, we apply a workaround to fix the incompatibility between \emph{exercise} and the french option from \textsl{babel} (see \href{http://tex.stackexchange.com/questions/338293/package-exercise-change-exercise-to-french-exercice}{stackexchange}).  
 %    \begin{macrocode}
 \@ifpackageloaded{babel}{
 \addto{\captionsfrench}{ %% replace frenchb (fix exercise package)  
@@ -212,6 +228,7 @@ Running "make install" installs the files in the local TeX tree.
 %    \end{macrocode}
 
 % \subsection{General Information}
+% \label{sec:info}
 % The user must redefine these commands that specify information about the course or the examination using |\renewcommand|.
 % \subsubsection{Course Information}
 % \begin{macro}{\coursename}
@@ -291,9 +308,10 @@ Running "make install" installs the files in the local TeX tree.
 % \end{macro}
 
 % \subsection{Export Helper}
+% \label{sec:export}
 % \begin{macro}{\ExamExport}
 % The command configures internal jobs using |\write18| that generate examination papers and corrections for both versions.
-% It is designed to be used only once in the preamble.
+% It is designed to be used only once in the preamble of the document.
 %    \begin{macrocode}
 \newcommand{\ExamExport}{%
 \ifx\ExamExportKey\undefined
