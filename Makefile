@@ -27,12 +27,14 @@ inst: all example
 	cp $(NAME).cls $(UTREE)/tex/latex/$(NAME)
 	cp $(NAME).pdf $(UTREE)/doc/latex/$(NAME)
 	cp $(EXAMPLE).tex $(UTREE)/doc/latex/$(NAME)
+	cp logo-uca.png $(UTREE)/tex/latex/$(NAME)
 install: all 
 	sudo mkdir -p $(LOCAL)/{tex,source,doc}/latex/$(NAME)
 	sudo cp $(NAME).dtx $(LOCAL)/source/latex/$(NAME)
 	sudo cp $(NAME).cls $(LOCAL)/tex/latex/$(NAME)
 	sudo cp $(NAME).pdf $(LOCAL)/doc/latex/$(NAME)
 	sudo cp $(EXAMPLE).tex $(LOCAL)/doc/latex/$(NAME)
+	sudo cp logo-uca.png $(LOCAL)/tex/latex/$(NAME)
 zip: all 
 	ln -sf . $(NAME)
 	zip -Drq $(PWD)/$(NAME)-$(VERS).zip $(NAME)/{README,$(NAME).{pdf,dtx}} $(NAME)/$(EXAMPLE).tex
