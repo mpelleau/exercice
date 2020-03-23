@@ -1,5 +1,6 @@
 NAME  = exercice
 EXAMPLE  = $(NAME)-example
+LOGO  = logo-uca.png
 SHELL = bash
 PWD   = $(shell pwd)
 VERS  = $(shell ltxfileinfo -v $(NAME).dtx|sed -e 's/^v//')
@@ -29,7 +30,7 @@ inst: all example
 	cp $(NAME).cls $(UTREE)/tex/latex/$(NAME)
 	cp $(NAME).pdf $(UTREE)/doc/latex/$(NAME)
 	cp $(EXAMPLE).tex $(UTREE)/doc/latex/$(NAME)
-	cp logo-uca.png $(UTREE)/tex/latex/$(NAME)
+	cp $(LOGO) $(UTREE)/tex/latex/$(NAME)
 
 install: all 
 	sudo mkdir -p $(LOCAL)/{tex,source,doc}/latex/$(NAME)
@@ -41,7 +42,7 @@ install: all
 
 zip: all 
 	ln -sf . $(NAME)
-	zip -Drq $(PWD)/$(NAME)-$(VERS).zip $(NAME)/{README,$(NAME).{pdf,dtx}} $(NAME)/$(EXAMPLE).tex
+	zip -Drq $(PWD)/$(NAME)-$(VERS).zip $(NAME)/{README,$(NAME).{pdf,cls,dtx}} $(NAME)/$(EXAMPLE).tex $(NAME)/$(LOGO)
 	rm $(NAME)
 
 
