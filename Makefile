@@ -5,6 +5,7 @@ PWD   = $(shell pwd)
 VERS  = $(shell ltxfileinfo -v $(NAME).dtx|sed -e 's/^v//')
 LOCAL = $(shell kpsewhich --var-value TEXMFLOCAL)
 UTREE = $(shell kpsewhich --var-value TEXMFHOME)
+
 all:	$(NAME).pdf
 	test -e README.txt && mv README.txt README || exit 0
 
@@ -18,6 +19,7 @@ $(NAME).pdf: $(NAME).dtx
 clean:
 	rm -f $(NAME).{aux,fls,glo,gls,hd,idx,ilg,ind,ins,log,out}
 	rm -f $(EXAMPLE)*.{aux,fls,glo,gls,hd,idx,ilg,ind,ins,log,loe,out}
+
 distclean: clean
 	rm -f $(NAME).{pdf,cls} README
 
@@ -28,6 +30,7 @@ inst: all example
 	cp $(NAME).pdf $(UTREE)/doc/latex/$(NAME)
 	cp $(EXAMPLE).tex $(UTREE)/doc/latex/$(NAME)
 	cp logo-uca.png $(UTREE)/tex/latex/$(NAME)
+
 install: all 
 	sudo mkdir -p $(LOCAL)/{tex,source,doc}/latex/$(NAME)
 	sudo cp $(NAME).dtx $(LOCAL)/source/latex/$(NAME)
@@ -35,6 +38,7 @@ install: all
 	sudo cp $(NAME).pdf $(LOCAL)/doc/latex/$(NAME)
 	sudo cp $(EXAMPLE).tex $(LOCAL)/doc/latex/$(NAME)
 	sudo cp logo-uca.png $(LOCAL)/tex/latex/$(NAME)
+
 zip: all 
 	ln -sf . $(NAME)
 	zip -Drq $(PWD)/$(NAME)-$(VERS).zip $(NAME)/{README,$(NAME).{pdf,dtx}} $(NAME)/$(EXAMPLE).tex
