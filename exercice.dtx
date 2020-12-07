@@ -236,25 +236,39 @@ Running "make install" installs the files in the local TeX tree.
 % \begin{macro}{\coursename}
 % The name of the course.
 %    \begin{macrocode}
-\newcommand{\coursename}{}
+\def\acoursename{}
+\newcommand{\coursename}[1]{\gdef\acoursename{#1}}
 %    \end{macrocode}
 % \end{macro}
 % \begin{macro}{\degreename}
 % The name of the degree.  
 %    \begin{macrocode}
-\newcommand{\degreename}{}
+\def\adegreename{}
+\newcommand{\degreename}[1]{\gdef\adegreename{#1}}
 %    \end{macrocode}
 % \end{macro}
 % \begin{macro}{\universityname}
 % The name of the university.  
 %    \begin{macrocode}
-\newcommand{\universityname}{Universit\'e C\^ote d'Azur}
+\def\auniversityname{Universit\'e C\^ote d'Azur}
+\newcommand{\universityname}[1]{\gdef\auniversityname{#1}}
 %    \end{macrocode}
 % \end{macro}
 % \begin{macro}{\universitylogo}
 % The path to an image with the logo of the university.  
 %    \begin{macrocode}
-\newcommand{\universitylogo}{logo-uca.png}
+\def\auniversitylogo{logo-uca.png}
+\newcommand{\universitylogo}[1]{\gdef\auniversitylogo{#1}}
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsubsection{Exam Remarks}
+% These informations are only displayed on the first page of the examination paper 
+% \begin{macro}{\ExamRemark}
+% Short remarks or instructions for the exam.
+%    \begin{macrocode}
+\def\aExamRemark{Aucun document autorisé. Écrire à l'encre.}
+\newcommand{\ExamRemark}[1]{\gdef\aExamRemark{#1}}
 %    \end{macrocode}
 % \end{macro}
 %
@@ -263,13 +277,16 @@ Running "make install" installs the files in the local TeX tree.
 % \begin{macro}{\ExamRemark}
 % Short remarks or instructions for the exam.
 %    \begin{macrocode}
-\newcommand{\ExamRemark}{Aucun document autorisé. Écrire à l'encre.}
+\def\aExamInfo{Toutes les questions sont indépendantes.}
+\newcommand{\ExamInfo}[1]{\gdef\aExamInfo{#1}}
 %    \end{macrocode}
 % \end{macro}
+%
 % \begin{macro}{\ExamDuration}
 % The duration of the exam.
 %    \begin{macrocode}
-\newcommand{\ExamDuration}{}
+\def\aExamDuration{}
+\newcommand{\ExamDuration}[1]{\gdef\aExamDuration{#1}}
 %    \end{macrocode}
 % \end{macro}
 
@@ -415,11 +432,11 @@ Running "make install" installs the files in the local TeX tree.
 \pagestyle{fancyplain}
 \fancyhf{}
 \ifExamOutput
-\lhead{\fancyplain{}{\coursename}}
+\lhead{\fancyplain{}{\acoursename}}
 \rhead{\fancyplain{}{\Versions{A}{B}\thepage}}
 \else
-\lhead{\fancyplain{\parbox[t]{7cm}{\large\universityname\\\coursename}}{\large\coursename}}
-\rhead{\fancyplain{\large\degreename}{\large\Versions{A}{B}\thepage}}
+\lhead{\fancyplain{\parbox[t]{7cm}{\large\auniversityname\\\acoursename}}{\large\acoursename}}
+\rhead{\fancyplain{\large\adegreename}{\large\Versions{A}{B}\thepage}}
 \fi
 %    \end{macrocode}
 % Redefine |\maketitle| with the |titling| package.
@@ -428,11 +445,11 @@ Running "make install" installs the files in the local TeX tree.
 \reversemarginpar    
 \pretitle{
   \vspace{-3.5cm}%
-  \hspace*{-2cm}\includegraphics[height=3cm]{\universitylogo}\hfill \\[10pt]  
+  \hspace*{-2cm}\includegraphics[height=3cm]{\auniversitylogo}\hfill \\[10pt]  
   \hspace*{-2cm}\begin{minipage}[b]{11cm}
     \large
-    \universityname \hfill \degreename\\
-    \hfill \coursename 
+    \auniversityname \hfill \adegreename\\
+    \hfill \acoursename 
 \begin{center}\LARGE}
 \posttitle{\par\end{center}\vskip 0.1em\end{minipage}}
 %    \end{macrocode}
@@ -448,10 +465,11 @@ Running "make install" installs the files in the local TeX tree.
 \begin{center}\large}
 \postdate{%
       \par\end{center}%
-\textbf{Durée :} \ExamDuration\\
-\ExamRemark\\[3pt]
+\textbf{Durée :} \aExamDuration\\
+\aExamRemark\\[3pt]
 \fbox{\parbox[t]{2cm}{Note\\ \ \\ \ \\ \ }}%
-\quad\parbox[t]{7cm}{\scriptsize Il est de votre responsabilité de rabattre le triangle grisé et de le cacheter au moyen de colle, agrafes ou papier adhésif. Si ne vous le faites pas, vous acceptez implicitement que votre copie ne soit pas anonyme.}%
+\quad\parbox[t]{7cm}{\aExamInfo}
+%
 \end{minipage}
 %    \end{macrocode}
 % Let print the identification block with the tikz package.
@@ -464,6 +482,8 @@ Running "make install" installs the files in the local TeX tree.
                   \path [coordinate]
                   \foreach \k in {1,...,4}{%
                     (0pt,8cm-\k*1.2cm) coordinate (d\k)};
+                    
+                  \draw (0, 0) node [below right] {\parbox[t]{7.5cm}{\scriptsize Il est de votre responsabilité de rabattre le triangle grisé et de le cacheter au moyen de colle, agrafes ou papier adhésif. Si ne vous le faites pas, vous acceptez implicitement que votre copie ne soit pas anonyme.}};
                   \path [clip] (0,0) rectangle (8,8);
                   \foreach \k/\t in {1/Nom,2/Prénom,3/Né(e) à,4/Le}{%
                     \node [inner sep=0pt,rotate=-45,%
